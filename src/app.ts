@@ -4,7 +4,7 @@ import compression from 'compression';
 import favicon from 'serve-favicon';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
+import mongoose, { ConnectionOptions } from 'mongoose';
 import expressHandlebars from 'express-handlebars';
 import expsession from 'express-session';
 import url, { UrlWithStringQuery } from 'url';
@@ -30,12 +30,16 @@ const port = process.env.PORT || process.env.NODE_PORT || 5000;
 
 const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/DomoMaker';
 
-mongoose.connect(dbURL, err => {
-  if (err) {
-    console.log('unable to init the mongo db');
-    throw err;
+mongoose.connect(
+  dbURL,
+  { useNewUrlParser: true, useUnifiedTopology: true } as ConnectionOptions,
+  err => {
+    if (err) {
+      console.log('unable to init the mongo db');
+      throw err;
+    }
   }
-});
+);
 
 let redisURL: UrlWithStringQuery = {
   hostname: 'redis-17436.c84.us-east-1-2.ec2.cloud.redislabs.com',
