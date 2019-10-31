@@ -220,7 +220,7 @@ const VisualComponent = () => {
             </Grid>
           </Box>
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
+          <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
           <Box alignSelf="center">
             <Heading>Subscribe to Premium</Heading>
             <Paragraph alignSelf="center">
