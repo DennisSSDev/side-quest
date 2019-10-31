@@ -50,7 +50,7 @@ const VisualComponent = () => {
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
-          <Box background={'dark-1'} pad="medium">
+          <Box background={'dark-1'} pad="medium" justify="center">
             <Grid
               gap="small"
               areas={[
