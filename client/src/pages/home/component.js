@@ -152,13 +152,7 @@ const VisualComponent = () => {
               rows={['flex']}
               justify="center"
             >
-              <Box
-                gridArea="left"
-                alignSelf="center"
-                margin="small"
-                background="brand"
-                pad={{ left: 'small' }}
-              >
+              <Box gridArea="left" background="brand" pad={{ left: 'small' }}>
                 <Heading size="small">
                   There are always projects to work on to keep yourself busy.
                 </Heading>
@@ -184,7 +178,7 @@ const VisualComponent = () => {
                   ]}
                   aria-label="chart"
                 />
-                <Heading size="20px">
+                <Heading size="20px" className="squished">
                   The number of projects increased by 500% over the past month
                   of October
                 </Heading>
