@@ -1,24 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Grommet, Box } from 'grommet';
+import { Route, Switch } from 'react-router-dom';
+import { v1 } from 'grommet-theme-v1';
+import Home from './pages/home/component';
 
-const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
-);
+const App = () => {
+  const AppSwitch = () => (
+    <>
+      <Grommet theme={v1} full>
+        <Box fill background="dark-1">
+          <Switch>
+            <Route exact path="/" component={Home} />
+          </Switch>
+        </Box>
+      </Grommet>
+    </>
+  );
+  return (
+    <Switch>
+      <AppSwitch />
+    </Switch>
+  );
+};
 
 export default App;
