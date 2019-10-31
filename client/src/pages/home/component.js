@@ -48,17 +48,9 @@ const VisualComponent = () => {
           </Box>
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box
-            background={'dark-1'}
-            pad="medium"
-            justify="center"
-            align="center"
-            alignContent="center"
-            alignSelf="center"
-          >
+          <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
+          <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
+          <Box background={'dark-1'} pad="medium">
             <Grid
               gap="small"
               areas={[
@@ -68,7 +60,6 @@ const VisualComponent = () => {
               ]}
               columns={['medium', 'flex', 'flex']}
               rows={['flex']}
-              justify="center"
             >
               <Box gridArea="nav" background="brand" pad={{ left: 'small' }}>
                 <Heading>So I made you a platform so you dont have to.</Heading>
@@ -133,14 +124,7 @@ const VisualComponent = () => {
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
-          <Box
-            background={'dark-1'}
-            pad="medium"
-            justify="center"
-            align="center"
-            alignContent="center"
-            alignSelf="center"
-          >
+          <Box background={'dark-1'} pad="medium">
             <Grid
               gap="small"
               areas={[
@@ -150,7 +134,6 @@ const VisualComponent = () => {
               ]}
               columns={['medium', 'flex', 'flex']}
               rows={['flex']}
-              justify="center"
             >
               <Box
                 gridArea="left"
@@ -220,6 +203,8 @@ const VisualComponent = () => {
             </Grid>
           </Box>
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
+          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
+          <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
           <Box alignSelf="center">
             <Heading>Subscribe to Premium</Heading>
