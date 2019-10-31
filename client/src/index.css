@@ -16,3 +16,8 @@ body {
 .percent {
   width: 200px;
 }
+
+.genLink {
+  text-decoration: 'none';
+  color: white;
+}
