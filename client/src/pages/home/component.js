@@ -10,6 +10,7 @@ import {
   Button
 } from 'grommet';
 import { StatusGood, Star } from 'grommet-icons';
+import { Link } from 'react-router-dom';
 import NavBar from '../../components/navbar/component';
 import MainAnimation from '../../components/appDisplay/component';
 import Footer from '../../components/footer/component';
@@ -272,13 +273,17 @@ const VisualComponent = () => {
                   <Heading textAlign="center" size="20px">
                     49.99$ / year
                   </Heading>
-                  <Button
-                    color="linear-gradient(180deg, #ebbe9b 0%, #e7a977 74%)"
-                    active
-                    primary
-                    label="Subscribe to Premium"
-                    icon={<Star color="white" />}
-                  />
+                  <Box animation="pulse" align="center">
+                    <Link to="/premium" className="genLink">
+                      <Button
+                        color="accent-4"
+                        primary
+                        label="Subscribe to Premium"
+                        margin={{ horizontal: '15px' }}
+                        icon={<Star />}
+                      />
+                    </Link>
+                  </Box>
                 </Box>
               </Box>
             </Grid>

@@ -3,8 +3,9 @@ import { Grommet, Box } from 'grommet';
 import { Route, Switch } from 'react-router-dom';
 import { v1 } from 'grommet-theme-v1';
 import Home from './pages/home/component';
-import SignupPage from './pages/signupPage/component';
-import LoginPage from './pages/loginPage/component';
+import SignupPage from './pages/signup/component';
+import LoginPage from './pages/login/component';
+import Premium from './pages/premium/component';
 
 const App = () => {
   const AppSwitch = () => (
@@ -15,6 +16,7 @@ const App = () => {
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={SignupPage} />
             <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/premium" component={Premium} />
           </Switch>
         </Box>
       </Grommet>

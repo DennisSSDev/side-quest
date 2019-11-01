@@ -24,7 +24,7 @@ const VisualComponent = () => (
                 regexp: new RegExp(
                   '^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$'
                 ),
-                message: `Woops, that's not a valid email`
+                message: `Woops, that's not a valid username`
               }}
             />
             <FormField

@@ -27,12 +27,11 @@ const VisualComponent = () => (
     >
       <Link to="/premium" className="genLink">
         <Button
-          color="linear-gradient(180deg, #ebbe9b 0%, #e7a977 74%)"
+          color="accent-4"
           primary
           label="Premium"
           margin={{ horizontal: '15px' }}
-          active
-          icon={<Star color="white" />}
+          icon={<Star />}
         />
       </Link>
       <Link to="/login" className="genLink">
