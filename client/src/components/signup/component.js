@@ -1,25 +1,71 @@
 import React, { useState } from 'react';
 import { Heading, Paragraph, Box, Form, FormField, Button } from 'grommet';
 import { Twemoji } from 'react-emoji-render';
+import { PropTypes } from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import { withCSRF } from '../../util';
 
-const VisualComponent = () => {
+const VisualComponent = props => {
   const [checker, updateChecker] = useState({
     isValidPass: true,
-    password: ''
+    redirect: false,
+    password: '',
+    password2: '',
+    username: '',
+    numRange: 0
   });
+
   const handleInputCheck = e => {
     const data = e.target.value;
     if (data !== checker.password) {
       updateChecker({ ...checker, isValidPass: false });
     } else {
-      updateChecker({ ...checker, isValidPass: true });
+      updateChecker({ ...checker, isValidPass: true, password2: data });
     }
   };
+
   const passwordStore = e => {
     updateChecker({ ...checker, password: e.target.value });
   };
+
+  const handleUsernameInput = e => {
+    updateChecker({ ...checker, username: e.target.value });
+  };
+
+  const handleNumberRangeInput = e => {
+    updateChecker({ ...checker, numRange: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    const data = {
+      user: checker.username,
+      pass: checker.password,
+      pass2: checker.password2,
+      range: checker.numRange,
+      _csrf: props.csrf
+    };
+    console.log(data);
+    const resp = await fetch('/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (resp.status !== 200) {
+      // show error here
+      return;
+    }
+    updateChecker({ ...checker, redirect: true });
+  };
+
+  const redirect = () => {
+    if (checker.redirect) {
+      return <Redirect to="/dashboard" />;
+    }
+    return null;
+  };
   return (
     <>
+      {redirect()}
       <Box align="center" justify="center" direction="column">
         <Box animation="zoomIn">
           <Box animation={{ type: 'fadeIn', duration: 800 }}>
@@ -38,11 +84,12 @@ const VisualComponent = () => {
         </Box>
         <Box animation={{ type: 'slideUp', duration: 800, delay: 1500 }}>
           <Box animation={{ type: 'fadeIn', duration: 900, delay: 1300 }}>
-            <Form>
+            <Form action="/signup" method="POST">
               <FormField
                 name="username"
                 label="Your creative 8 letter name goes here"
                 required
+                onInput={handleUsernameInput}
                 validate={{
                   regexp: new RegExp(
                     '^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){6,18}[a-zA-Z0-9]$'
@@ -84,6 +131,7 @@ const VisualComponent = () => {
                   regexp: new RegExp('^(?:[1-9]|0[1-9]|10)$'),
                   message: 'Do you really not know how much is that?'
                 }}
+                onInput={handleNumberRangeInput}
               />
               {!checker.isValidPass && (
                 <Box
@@ -105,7 +153,12 @@ const VisualComponent = () => {
                 gap="small"
                 margin={{ top: 'small' }}
               >
-                <Button type="submit" primary label="Submit" />
+                <Button
+                  type="submit"
+                  primary
+                  label="Submit"
+                  onClick={handleSubmit}
+                />
                 <Twemoji text="Are you ready to enter the zone? 👽" />
               </Box>
             </Form>
@@ -116,6 +169,10 @@ const VisualComponent = () => {
   );
 };
 
-const Signup = VisualComponent;
+VisualComponent.propTypes = {
+  csrf: PropTypes.string.isRequired
+};
+
+const Signup = withCSRF(VisualComponent);
 
 export default Signup;

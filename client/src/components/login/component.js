@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Heading, Box, Form, FormField, Button } from 'grommet';
 import { Twemoji } from 'react-emoji-render';
 import { Link } from 'react-router-dom';
@@ -6,7 +6,38 @@ import PropTypes from 'prop-types';
 import { withCSRF } from '../../util';
 
 const VisualComponent = props => {
-  console.log(props.csrf);
+  const [formData, updateFormData] = useState({
+    redirect: false,
+    password: '',
+    username: ''
+  });
+
+  const handlePasswordChange = e => {
+    updateFormData({ ...formData, password: e.target.value });
+  };
+
+  const handleUsernameChange = e => {
+    updateFormData({ ...formData, username: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    const data = {
+      user: formData.username,
+      pass: formData.password,
+      _csrf: props.csrf
+    };
+    console.log(data);
+    const resp = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (resp.status !== 200) {
+      // show error here
+      return;
+    }
+    updateFormData({ ...formData, redirect: true });
+  };
   return (
     <>
       <Box align="center" justify="center" direction="column">
@@ -22,6 +53,7 @@ const VisualComponent = props => {
             <Form>
               <FormField
                 name="username"
+                onInput={handleUsernameChange}
                 label="Username"
                 required
                 validate={{
@@ -33,6 +65,7 @@ const VisualComponent = props => {
               />
               <FormField
                 type="password"
+                onInput={handlePasswordChange}
                 name="password"
                 required
                 label="Password"
@@ -43,8 +76,6 @@ const VisualComponent = props => {
                   message: 'This is an invalid password'
                 }}
               />
-              <input type="hidden" name="_csrf" value={props.csrf} />
-              <FormField type="hidden" name="_csrf" value={props.csrf} />
               <Box
                 direction="row"
                 alignContent="between"
@@ -52,7 +83,12 @@ const VisualComponent = props => {
                 gap="small"
                 margin={{ top: 'large' }}
               >
-                <Button type="submit" primary label="Submit" />
+                <Button
+                  onClick={handleSubmit}
+                  type="submit"
+                  primary
+                  label="Submit"
+                />
                 <Twemoji text="Time to get back on the Grind! 💪" />
               </Box>
             </Form>
