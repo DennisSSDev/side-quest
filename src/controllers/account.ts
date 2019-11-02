@@ -7,6 +7,7 @@ interface Account {
   getToken: func;
   login: func;
   signup: func;
+  logout: func;
 }
 
 const getToken = (req: Request, res: Response) => {
@@ -71,10 +72,24 @@ const signup = (req: Request, res: Response) => {
   });
 };
 
+const logout = (req: Request, res: Response) => {
+  try {
+    if (req.session) {
+      req.session.destroy(() => {});
+      res.json({ result: 'session disconnected' });
+      return;
+    }
+    throw new Error('there is no active session');
+  } catch (err) {
+    res.status(400).json({ error: err });
+  }
+};
+
 const Account: Account = {
   getToken,
   login,
-  signup
+  signup,
+  logout
 };
 
 export default Account;

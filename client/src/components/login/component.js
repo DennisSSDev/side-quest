@@ -9,7 +9,8 @@ const VisualComponent = props => {
   const [formData, updateFormData] = useState({
     redirect: false,
     password: '',
-    username: ''
+    username: '',
+    error: ''
   });
 
   const handlePasswordChange = e => {
@@ -25,6 +26,7 @@ const VisualComponent = props => {
       username: formData.username,
       pass: formData.password
     };
+    if (data.username === '' || data.pass === '') return;
     const resp = await fetch('/login', {
       method: 'POST',
       headers: {
@@ -37,7 +39,10 @@ const VisualComponent = props => {
     const respData = await resp.json();
     if (resp.status !== 200) {
       // show error here
-      console.log(resp);
+      updateFormData({ ...formData, error: respData.error });
+      setTimeout(() => {
+        updateFormData({ ...formData, error: '' });
+      }, 3500);
       return;
     }
     if (respData.redirect === '/dashboard')
@@ -106,6 +111,19 @@ const VisualComponent = props => {
                 <Twemoji text="Time to get back on the Grind! 💪" />
               </Box>
             </Form>
+            {formData.error && (
+              <Box
+                direction="row"
+                alignContent="between"
+                align="baseline"
+                gap="small"
+                margin={{ top: 'small' }}
+              >
+                <Heading size="15px" color="#FF4040">
+                  <Twemoji text={`${formData.error} 😞`} />
+                </Heading>
+              </Box>
+            )}
             <Box
               direction="row"
               alignContent="between"

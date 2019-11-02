@@ -12,7 +12,8 @@ const VisualComponent = props => {
     password: '',
     password2: '',
     username: '',
-    numRange: 0
+    numRange: 0,
+    error: ''
   });
 
   const handleInputCheck = e => {
@@ -62,7 +63,10 @@ const VisualComponent = props => {
     });
     const respData = await resp.json();
     if (resp.status !== 200) {
-      console.log('error occured');
+      updateChecker({ ...checker, isValidPass: false, error: respData.error });
+      setTimeout(() => {
+        updateChecker({ ...checker, isValidPass: true });
+      }, 3000);
       return;
     }
     if (respData.redirect && respData)
@@ -154,7 +158,13 @@ const VisualComponent = props => {
                   margin={{ top: 'small' }}
                 >
                   <Heading size="15px" color="#FF4040">
-                    <Twemoji text="The passwords do not match 😕" />
+                    <Twemoji
+                      text={
+                        checker.error !== ''
+                          ? `${checker.error} 😞`
+                          : 'The passwords do not match 😕'
+                      }
+                    />
                   </Heading>
                 </Box>
               )}

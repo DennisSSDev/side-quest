@@ -1,10 +1,16 @@
 import { Express } from 'express';
-import isHTTPS, { isLoggedOut, auth, pub } from './middleware/index';
+import isHTTPS, {
+  isLoggedOut,
+  auth,
+  pub,
+  isLoggedIn
+} from './middleware/index';
 import Account from './controllers/account';
 
 const router = (app: Express) => {
   app.get('/auth', isHTTPS, auth);
   app.get('/public', isHTTPS, pub);
+  app.get('/logout', isHTTPS, isLoggedIn, Account.logout);
   app.get('/token', isHTTPS, Account.getToken);
   app.post('/signup', isHTTPS, isLoggedOut, Account.signup);
   app.post('/login', isHTTPS, isLoggedOut, Account.login);

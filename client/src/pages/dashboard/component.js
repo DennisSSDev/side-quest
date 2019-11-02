@@ -8,7 +8,7 @@ const VisualComponent = () => (
   <>
     <NavBar />
     <Box width="xsmall" pad={{ bottom: 'large', top: 'large' }} />
-    <Box>
+    <Box alignSelf="center">
       <Heading textAlign="center">Dashboard</Heading>
     </Box>
     <Footer />
