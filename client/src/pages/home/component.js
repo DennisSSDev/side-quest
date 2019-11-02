@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import NavBar from '../../components/navbar/component';
 import MainAnimation from '../../components/appDisplay/component';
 import Footer from '../../components/footer/component';
+import { isPublic } from '../../util';
 
 const VisualComponent = () => {
   return (
@@ -299,5 +300,6 @@ const VisualComponent = () => {
   );
 };
 
-const Home = VisualComponent;
+const Home = isPublic(VisualComponent);
+
 export default Home;

@@ -6,6 +6,7 @@ import Home from './pages/home/component';
 import SignupPage from './pages/signup/component';
 import LoginPage from './pages/login/component';
 import Premium from './pages/premium/component';
+import Dashboard from './pages/dashboard/component';
 
 const App = () => {
   const AppSwitch = () => (
@@ -14,9 +15,10 @@ const App = () => {
         <Box fill background="dark-1">
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/signup" component={SignupPage} />
-            <Route exact path="/login" component={LoginPage} />
-            <Route exact path="/premium" component={Premium} />
+            <Route path="/signup" component={SignupPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/premium" component={Premium} />
+            <Route path="/dashboard" component={Dashboard} />
           </Switch>
         </Box>
       </Grommet>

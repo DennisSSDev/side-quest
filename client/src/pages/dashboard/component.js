@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Heading } from 'grommet';
 import NavBar from '../../components/navbar/component';
 import Footer from '../../components/footer/component';
+import { isAuthorized } from '../../util';
 
 const VisualComponent = () => (
   <>
@@ -14,6 +15,6 @@ const VisualComponent = () => (
   </>
 );
 
-const Dashboard = VisualComponent;
+const Dashboard = isAuthorized(VisualComponent);
 
 export default Dashboard;

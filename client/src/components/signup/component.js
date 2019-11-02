@@ -38,23 +38,35 @@ const VisualComponent = props => {
 
   const handleSubmit = async () => {
     const data = {
-      user: checker.username,
+      username: checker.username,
       pass: checker.password,
       pass2: checker.password2,
-      range: checker.numRange,
-      _csrf: props.csrf
+      range: checker.numRange
     };
-    console.log(data);
+    if (
+      data.username === '' ||
+      data.pass === '' ||
+      data.pass2 === '' ||
+      data.range > 10 ||
+      data.range < 0
+    )
+      return;
     const resp = await fetch('/signup', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'CSRF-Token': props.csrf
+      },
       body: JSON.stringify(data)
     });
+    const respData = await resp.json();
     if (resp.status !== 200) {
-      // show error here
+      console.log('error occured');
       return;
     }
-    updateChecker({ ...checker, redirect: true });
+    if (respData.redirect && respData)
+      updateChecker({ ...checker, redirect: true });
   };
 
   const redirect = () => {

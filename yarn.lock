@@ -78,15 +78,17 @@
     "@types/express" "*"
     "@types/express-serve-static-core" "*"
 
+"@types/es6-promise@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@types/es6-promise/-/es6-promise-3.3.0.tgz#61b55e554fd807b563f158a7986ee53d3a5a5a9d"
+  integrity sha512-ixCIAEkLUKv9movnHKCzx2rzAJgEnSALDXPrOSSwOjWwXFs0ssSZKan+O2e3FExPPCbX+DfA9NcKsbvLuyUlNA==
+  dependencies:
+    es6-promise "*"
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag==
-
-"@types/events@*":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
-  integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
 
 "@types/express-handlebars@0.0.30":
   version "0.0.30"
@@ -143,12 +145,11 @@
     "@types/bson" "*"
     "@types/node" "*"
 
-"@types/mongoose@5.0.11":
-  version "5.0.11"
-  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.0.11.tgz#db5fc62f17a435fc7ec6c32f936c6383c336ef6d"
-  integrity sha512-NETaYewdrwx0wSyQFNdahtra2K08wCwKOV3LMRdeRhsbBhsghEr1u825I1XfWNfdL+HE77AlBxqO4SP2VlXGsw==
+"@types/mongoose@^5.5.28":
+  version "5.5.28"
+  resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-5.5.28.tgz#8f52367c7d05ada15086a50c6f087f13c8949906"
+  integrity sha512-1VPsBwiJeYDe4E9h8XIL+c3w3q+RzNQwd2R7tnQ8XO7UDOoLOIK4oIRNTUjQY7PFBWAZpzjOggvNDwUkPIDSDQ==
   dependencies:
-    "@types/events" "*"
     "@types/mongodb" "*"
     "@types/node" "*"
 
@@ -841,6 +842,11 @@ es-to-primitive@^1.2.0:
     is-callable "^1.1.4"
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
+
+es6-promise@*, es6-promise@^4.2.8:
+  version "4.2.8"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.8.tgz#4eb21594c972bc40553d276e510539143db53e0a"
+  integrity sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==
 
 escape-html@~1.0.3:
   version "1.0.3"

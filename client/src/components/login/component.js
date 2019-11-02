@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Heading, Box, Form, FormField, Button } from 'grommet';
 import { Twemoji } from 'react-emoji-render';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withCSRF } from '../../util';
 
@@ -22,24 +22,38 @@ const VisualComponent = props => {
 
   const handleSubmit = async () => {
     const data = {
-      user: formData.username,
-      pass: formData.password,
-      _csrf: props.csrf
+      username: formData.username,
+      pass: formData.password
     };
-    console.log(data);
     const resp = await fetch('/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'CSRF-Token': props.csrf
+      },
       body: JSON.stringify(data)
     });
+    const respData = await resp.json();
     if (resp.status !== 200) {
       // show error here
+      console.log(resp);
       return;
     }
-    updateFormData({ ...formData, redirect: true });
+    if (respData.redirect === '/dashboard')
+      updateFormData({ ...formData, redirect: true });
   };
+
+  const redirect = () => {
+    if (formData.redirect) {
+      return <Redirect to="/dashboard" />;
+    }
+    return null;
+  };
+
   return (
     <>
+      {redirect()}
       <Box align="center" justify="center" direction="column">
         <Box animation="zoomIn">
           <Box animation={{ type: 'fadeIn', duration: 500 }}>
@@ -50,7 +64,7 @@ const VisualComponent = props => {
         </Box>
         <Box animation={{ type: 'slideUp', duration: 800, delay: 600 }}>
           <Box animation={{ type: 'fadeIn', duration: 900, delay: 400 }}>
-            <Form>
+            <Form action="/signup" method="POST">
               <FormField
                 name="username"
                 onInput={handleUsernameChange}

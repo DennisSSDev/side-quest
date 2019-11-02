@@ -2,6 +2,7 @@ import React from 'react';
 import { Box } from 'grommet';
 import NavBar from '../../components/navbar/component';
 import Signup from '../../components/signup/component';
+import { isPublic } from '../../util';
 
 const VisualComponent = () => (
   <>
@@ -11,6 +12,6 @@ const VisualComponent = () => (
   </>
 );
 
-const SignupPage = VisualComponent;
+const SignupPage = isPublic(VisualComponent);
 
 export default SignupPage;
