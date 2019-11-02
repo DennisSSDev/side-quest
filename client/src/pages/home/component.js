@@ -20,7 +20,13 @@ const VisualComponent = () => {
   return (
     <>
       <NavBar />
-      <Box justify="center" direction="column" background={'dark-1'} fill>
+      <Box
+        justify="center"
+        direction="column"
+        background={'dark-1'}
+        fill
+        responsive
+      >
         <Box animation={{ type: 'zoomIn' }}>
           <Box animation="fadeIn" pad={{ top: '90px' }}>
             <Heading size={'medium'} alignSelf={'center'} textAlign={'start'}>
@@ -62,37 +68,62 @@ const VisualComponent = () => {
             alignSelf="center"
           >
             <Grid
-              gap="small"
               areas={[
                 { name: 'nav', start: [0, 0], end: [0, 0] },
                 { name: 'main', start: [1, 0], end: [1, 0] },
                 { name: 'side', start: [2, 0], end: [2, 0] }
               ]}
-              columns={['medium', 'flex', 'flex']}
+              columns={['flex', 'flex', 'flex']}
               rows={['flex']}
               justify="center"
             >
-              <Box gridArea="nav" background="brand" pad={{ left: 'small' }}>
-                <Heading>So I made you a platform so you dont have to.</Heading>
+              <Box
+                gridArea="nav"
+                background="brand"
+                pad={{ left: 'small' }}
+                responsive
+              >
+                <Box
+                  alignSelf="center"
+                  align="center"
+                  alignContent="center"
+                  responsive
+                >
+                  <Heading responsive>
+                    So I made you a platform so you dont have to.
+                  </Heading>
+                </Box>
               </Box>
               <Box
                 gridArea="main"
                 pad={{ left: 'large' }}
                 margin={{ left: 'large' }}
+                responsive
               >
                 {[
                   'Easy Search',
                   'Projects by preferences',
                   'No ads or other bs'
                 ].map(val => (
-                  <Box key={val} direction="row" align="center" gap="small">
+                  <Box
+                    key={val}
+                    direction="row"
+                    align="center"
+                    gap="small"
+                    responsive
+                  >
                     <Box>
                       <StatusGood size="medium" color="#8cc800" />
                     </Box>
-                    <Box>
+                    <Box
+                      responsive
+                      alignSelf="center"
+                      align="center"
+                      alignContent="center"
+                    >
                       <Heading
                         alignSelf="center"
-                        size="31px"
+                        size="25px"
                         textAlign="center"
                       >
                         {val}
@@ -101,7 +132,7 @@ const VisualComponent = () => {
                   </Box>
                 ))}
               </Box>
-              <Box gridArea="side" margin={{ left: 'xlarge' }}>
+              <Box gridArea="side" margin={{ left: 'xlarge' }} responsive>
                 <Stack anchor="left">
                   <Meter
                     type="circle"
@@ -117,12 +148,13 @@ const VisualComponent = () => {
                     size="300px"
                     thickness="small"
                   />
-                  <Box pad={{ left: '60px' }}>
+                  <Box pad={{ left: '60px' }} responsive>
                     <Paragraph
                       size="medium"
                       textAlign="start"
                       alignSelf="end"
                       className="percent"
+                      responsive
                     >
                       76% of users have found their next project within 1 hour
                     </Paragraph>
@@ -144,18 +176,22 @@ const VisualComponent = () => {
             alignSelf="center"
           >
             <Grid
-              gap="small"
               areas={[
                 { name: 'left', start: [0, 0], end: [0, 0] },
                 { name: 'center', start: [1, 0], end: [1, 0] },
                 { name: 'right', start: [2, 0], end: [2, 0] }
               ]}
-              columns={['medium', 'flex', 'flex']}
+              columns={['flex', 'flex', 'flex']}
               rows={['flex']}
               justify="center"
             >
-              <Box gridArea="left" background="brand" pad={{ left: 'small' }}>
-                <Heading size="small">
+              <Box
+                gridArea="left"
+                background="brand"
+                pad={{ left: 'small' }}
+                responsive
+              >
+                <Heading size="small" alignSelf="center" responsive>
                   There are always projects to work on to keep yourself busy.
                 </Heading>
               </Box>
@@ -180,7 +216,7 @@ const VisualComponent = () => {
                   ]}
                   aria-label="chart"
                 />
-                <Heading size="20px" className="squished">
+                <Heading size="20px" className="squished" responsive>
                   The number of projects increased by 500% over the past month
                   of October
                 </Heading>
@@ -207,6 +243,7 @@ const VisualComponent = () => {
                       textAlign="start"
                       alignSelf="end"
                       className="percent"
+                      responsive
                     >
                       92% of projects end up being remote
                     </Paragraph>
@@ -217,7 +254,7 @@ const VisualComponent = () => {
           </Box>
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
-          <Box alignSelf="center">
+          <Box alignSelf="center" responsive>
             <Heading>Subscribe to Premium</Heading>
             <Paragraph alignSelf="center">
               Premium helps me sustain the service, but you also get a nice
@@ -240,7 +277,7 @@ const VisualComponent = () => {
               columns={['flex', 'flex']}
               rows={['flex']}
             >
-              <Box gridArea="packs">
+              <Box gridArea="packs" responsive>
                 {[
                   'No limit on project creation / sign up',
                   'Private and *VIP* project creation',
@@ -263,7 +300,7 @@ const VisualComponent = () => {
                   </Box>
                 ))}
               </Box>
-              <Box gridArea="sub" alignSelf="center">
+              <Box gridArea="sub" alignSelf="center" responsive>
                 <Box width="medium">
                   <Heading textAlign="center" size="20px">
                     5.99$ / month

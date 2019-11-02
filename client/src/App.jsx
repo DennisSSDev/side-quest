@@ -7,6 +7,7 @@ import SignupPage from './pages/signup/component';
 import LoginPage from './pages/login/component';
 import Premium from './pages/premium/component';
 import Dashboard from './pages/dashboard/component';
+import ProjectSearch from './pages/projectSearch/component';
 
 const App = () => {
   const AppSwitch = () => (
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/login" component={LoginPage} />
             <Route path="/premium" component={Premium} />
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/projectSearch" component={ProjectSearch} />
           </Switch>
         </Box>
       </Grommet>

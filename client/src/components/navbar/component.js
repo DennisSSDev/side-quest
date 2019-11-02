@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, Text } from 'grommet';
-import { Star } from 'grommet-icons';
+import { Star, Cubes, User } from 'grommet-icons';
 import { Link } from 'react-router-dom';
 import useMountEffect, {
   toggleVisIfAuthorized,
@@ -51,6 +51,7 @@ let LogOutButton = () => {
 let DashboardButton = () => (
   <Link to="/dashboard" className="genLink">
     <Button
+      icon={<User />}
       color="#6FFFB0"
       primary
       margin={{ horizontal: '5px' }}
@@ -59,10 +60,23 @@ let DashboardButton = () => (
   </Link>
 );
 
+let ProjectSearch = () => (
+  <Link to="/projectSearch" className="genLink">
+    <Button
+      icon={<Cubes />}
+      color="#6FFFB0"
+      primary
+      margin={{ horizontal: '5px' }}
+      label="Global Project Search"
+    />
+  </Link>
+);
+
 LogInButton = toggleVisIfAuthorized(LogInButton, false, true);
 SignUpButton = toggleVisIfAuthorized(SignUpButton, false, true);
 LogOutButton = toggleVisIfAuthorized(LogOutButton, true, false);
 DashboardButton = toggleVisIfAuthorized(DashboardButton, true, false);
+ProjectSearch = toggleVisIfAuthorized(ProjectSearch, true, false);
 
 const MainButton = () => {
   const [isAuth, setAuth] = useState(false);
@@ -115,9 +129,10 @@ const VisualComponent = () => (
       <MainButton />
     </Box>
     <Box
-      pad={{ horizontal: 'medium', vertical: 'small' }}
+      pad={{ horizontal: 'small', vertical: 'small' }}
       direction="row"
       justify="between"
+      align="end"
     >
       <Link to="/premium" className="genLink">
         <Button
@@ -130,6 +145,7 @@ const VisualComponent = () => (
       </Link>
       <LogInButton />
       <SignUpButton />
+      <ProjectSearch />
       <DashboardButton />
       <LogOutButton />
     </Box>

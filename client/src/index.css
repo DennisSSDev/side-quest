@@ -26,3 +26,7 @@ body {
   max-width: 300px;
   width: 400px;
 }
+
+.menu {
+  z-index: 100100000000001;
+}
