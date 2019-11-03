@@ -1,7 +1,11 @@
 import fs from 'fs';
 
 const genAsset = (filename: string) => {
-  const binary = fs.readFileSync(`${__dirname}/img/${filename}`);
+  let path = `${__dirname}/img/${filename}`;
+  if (process.env.NODE_ENV === 'production') {
+    path = `${__dirname}/../../src/defaults/img/${filename}`;
+  }
+  const binary = fs.readFileSync(path);
   return Buffer.from(binary).toString('base64');
 };
 
