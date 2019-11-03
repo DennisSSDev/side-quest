@@ -3,7 +3,7 @@ import { Heading, Box, Form, FormField, Button } from 'grommet';
 import { Twemoji } from 'react-emoji-render';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { withCSRF } from '../../util';
+import { withCSRF, post } from '../../util';
 
 const VisualComponent = props => {
   const [formData, updateFormData] = useState({
@@ -27,15 +27,7 @@ const VisualComponent = props => {
       pass: formData.password
     };
     if (data.username === '' || data.pass === '') return;
-    const resp = await fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'CSRF-Token': props.csrf
-      },
-      body: JSON.stringify(data)
-    });
+    const resp = await post('/login', data, props.csrf);
     const respData = await resp.json();
     if (resp.status !== 200) {
       // show error here

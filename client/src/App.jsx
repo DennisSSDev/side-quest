@@ -8,6 +8,7 @@ import LoginPage from './pages/login/component';
 import Premium from './pages/premium/component';
 import Dashboard from './pages/dashboard/component';
 import ProjectSearch from './pages/projectSearch/component';
+import CreateProject from './pages/createProject/component';
 
 const App = () => {
   const AppSwitch = () => (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/premium" component={Premium} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/projectSearch" component={ProjectSearch} />
+            <Route path="/createProject" component={CreateProject} />
           </Switch>
         </Box>
       </Grommet>

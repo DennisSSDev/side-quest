@@ -1,5 +1,6 @@
 import { Response, Request } from 'express';
 import { AccountModel, AccountSchema } from '../models';
+import isStringCheck from '../util';
 
 type func = (req: Request, res: Response) => void;
 
@@ -8,6 +9,8 @@ interface Account {
   login: func;
   signup: func;
   logout: func;
+  changePassword: func;
+  meta: func;
 }
 
 const getToken = (req: Request, res: Response) => {
@@ -37,12 +40,10 @@ const login = (req: Request, res: Response) => {
 
 const signup = (req: Request, res: Response) => {
   const { username, pass, pass2 } = req.body;
-  if (
-    !(typeof username === 'string') ||
-    !(typeof pass === 'string') ||
-    !(typeof pass2 === 'string')
-  ) {
-    return res.status(400).json({ error: 'All fields are required' });
+  try {
+    isStringCheck(username, pass, pass2);
+  } catch (err) {
+    return res.status(400).json({ error: err });
   }
   if (pass !== pass2) {
     return res.status(400).json({ error: `Passwords don't match` });
@@ -85,11 +86,54 @@ const logout = (req: Request, res: Response) => {
   }
 };
 
+const changePassword = (req: Request, res: Response) => {
+  if (!req.session || !req.session.account) {
+    return res.status(400).json({ error: 'there is no active session' });
+  }
+  const { oldpass, pass, pass2 } = req.body;
+  try {
+    isStringCheck(oldpass, pass, pass2);
+  } catch (err) {
+    return res.status(400).json({ error: err });
+  }
+  if (pass !== pass2) {
+    return res.status(400).json({ error: 'passwords do not match' });
+  }
+  if (oldpass === '') {
+    return res.status(400).json({ error: 'your old password is invalid' });
+  }
+  return AccountModel.updateUserPassword(
+    req.session.account._id,
+    oldpass,
+    pass,
+    err => {
+      if (err) {
+        return res.status(400).json({ error: err });
+      }
+      return res.json({ result: 'user password updated' });
+    }
+  );
+};
+
+const meta = (req: Request, res: Response) => {
+  if (!req.session || !req.session.account) {
+    return res.status(400).json({ error: 'there is no active session' });
+  }
+  return AccountModel.getUserMetaInfo(req.session.account._id, (err, doc) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
+    return res.json(doc);
+  });
+};
+
 const Account: Account = {
   getToken,
   login,
   signup,
-  logout
+  logout,
+  changePassword,
+  meta
 };
 
 export default Account;

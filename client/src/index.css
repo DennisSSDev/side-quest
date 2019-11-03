@@ -22,6 +22,11 @@ body {
   color: white;
 }
 
+.specLink {
+  text-decoration: none;
+  color: #00aced;
+}
+
 .squished {
   max-width: 300px;
   width: 400px;
@@ -29,4 +34,8 @@ body {
 
 .menu {
   z-index: 100100000000001;
+}
+
+.round {
+  border-radius: 50%;
 }

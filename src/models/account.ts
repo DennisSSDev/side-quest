@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import mongoose, { Schema, Document } from 'mongoose';
 
 mongoose.Promise = global.Promise;
+const convertId = mongoose.Types.ObjectId;
 
 const iterations = 10000;
 const saltLength = 64;
@@ -89,6 +90,43 @@ export class AccountModel {
     username: doc.username,
     _id: doc._id
   });
+
+  static updateUserPassword = (
+    id: string,
+    oldPassword: string,
+    newPassword: string,
+    callback: cb
+  ) => {
+    const userID = convertId(id);
+    AccountSchema.findById(userID, (err, doc) => {
+      if (err) {
+        return callback(err);
+      }
+      if (!doc) {
+        return callback(new Error('Document was not found'));
+      }
+      return validatePassword(doc, oldPassword, result => {
+        if (result !== true) {
+          return callback(new Error('Old Password is invalid'));
+        }
+        return AccountModel.genHash(newPassword, (salt, hash) => {
+          return AccountSchema.updateOne(
+            { username: doc.username },
+            { salt, password: hash },
+            callback
+          );
+        });
+      });
+    });
+  };
+
+  static getUserMetaInfo = (id: string, callback: cb) => {
+    const _id = convertId(id);
+
+    return AccountSchema.findById(_id)
+      .select('username createdAt')
+      .exec(callback);
+  };
 
   static authenticate = (username: string, password: string, callback: cb) =>
     AccountModel.findByUsername(username, (err, doc) => {

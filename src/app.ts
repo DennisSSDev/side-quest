@@ -12,6 +12,7 @@ import csrf from 'csurf';
 
 // engrave all the routes here
 import router from './router';
+import generateDefaultFiles from './defaults';
 
 interface ResponseError extends Error {
   status?: number;
@@ -110,6 +111,8 @@ app.use(
     return false;
   }
 );
+
+generateDefaultFiles();
 
 router(app);
 

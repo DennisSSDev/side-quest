@@ -33,6 +33,69 @@ export const withCSRF = BaseComponent => ({ ...props }) => {
   return <BaseComponent {...props} csrf={csrf} />;
 };
 
+export const withUserData = BaseComponent => ({ ...props }) => {
+  const [userData, setUserData] = useState({
+    fullname: '',
+    email: '',
+    twitter: '',
+    photo: ''
+  });
+  const requestUserData = async signal => {
+    const resp = await request('/userdata', signal);
+    if (!resp.ok) {
+      const data = await resp.json();
+      console.log(data.error);
+      return;
+    }
+    const data = await resp.json();
+
+    if (data.data === null || data.data.photo === '') {
+      const imgResp = await request('/default/image', signal);
+      if (!imgResp.ok) {
+        const err = await imgResp.json();
+        console.log(err.error);
+        return;
+      }
+      const imgData = await imgResp.json();
+      data.photo = imgData.img;
+    }
+    setUserData(data);
+  };
+  useMountEffect(() => {
+    const controller = new AbortController();
+    requestUserData(controller.signal);
+    return function cleanup() {
+      controller.abort();
+    };
+  });
+  return <BaseComponent {...props} userData={userData} />;
+};
+
+export const withUserMeta = BaseComponent => ({ ...props }) => {
+  const [meta, setMeta] = useState({
+    username: '',
+    createdAt: Date
+  });
+  const requestUserData = async signal => {
+    const resp = await request('/meta', signal);
+    if (!resp.ok) {
+      const data = await resp.json();
+      console.log(data.error);
+      return;
+    }
+    const data = await resp.json();
+    setMeta(data);
+  };
+  useMountEffect(() => {
+    const controller = new AbortController();
+    requestUserData(controller.signal);
+    return function cleanup() {
+      controller.abort();
+    };
+  });
+  return <BaseComponent {...props} meta={meta} />;
+};
+
 export const isPublic = BaseComponent => ({ ...props }) => {
   const [rerouteObj, setReroute] = useState({ reroute: false, to: '/' });
   const isLoggedIn = async signal => {
@@ -109,6 +172,18 @@ export const toggleVisIfAuthorized = (
     return <BaseComponent {...props} />;
   }
   return null;
+};
+
+export const post = (endpoint, data, csrfToken) => {
+  return fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'CSRF-Token': csrfToken
+    },
+    body: JSON.stringify(data)
+  });
 };
 
 export default useMountEffect;

@@ -52,7 +52,6 @@ let DashboardButton = () => (
   <Link to="/dashboard" className="genLink">
     <Button
       icon={<User />}
-      color="#6FFFB0"
       primary
       margin={{ horizontal: '5px' }}
       label="Dashboard"
@@ -64,7 +63,6 @@ let ProjectSearch = () => (
   <Link to="/projectSearch" className="genLink">
     <Button
       icon={<Cubes />}
-      color="#6FFFB0"
       primary
       margin={{ horizontal: '5px' }}
       label="Global Project Search"
