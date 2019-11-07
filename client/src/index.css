@@ -27,6 +27,10 @@ body {
   color: #00aced;
 }
 
+.specLink:hover {
+  text-decoration: underline;
+}
+
 .squished {
   max-width: 300px;
   width: 400px;
@@ -38,4 +42,10 @@ body {
 
 .round {
   border-radius: 50%;
+}
+
+.small {
+  max-width: 115px;
+  max-height: 115px;
+  border: 2px solid gold;
 }

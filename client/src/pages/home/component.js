@@ -34,7 +34,6 @@ const VisualComponent = () => {
             </Heading>
           </Box>
         </Box>
-        <Box width="xsmall" pad={{ bottom: 'large', top: 'large' }} />
         <Box animation={{ type: 'fadeIn', delay: 1000 }} background={'dark-1'}>
           <MainAnimation />
         </Box>
@@ -42,7 +41,6 @@ const VisualComponent = () => {
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box width="xsmall" pad={{ top: 'small', bottom: 'large' }} />
           <Box alignSelf="center">
             <Heading>Finding a team can be hard</Heading>
             <Paragraph alignSelf="center">
@@ -54,7 +52,6 @@ const VisualComponent = () => {
               - Dennis (Twitch Software Engineer)
             </Paragraph>
           </Box>
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
@@ -253,7 +250,7 @@ const VisualComponent = () => {
             </Grid>
           </Box>
           <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
+          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box alignSelf="center" responsive>
             <Heading>Subscribe to Premium</Heading>
             <Paragraph alignSelf="center">
@@ -261,8 +258,6 @@ const VisualComponent = () => {
               bundle of packages!
             </Paragraph>
           </Box>
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
           <Box width="xsmall" pad={{ top: 'medium', bottom: 'medium' }} />
           <Box background={'dark-1'} pad="medium">
             <Grid
@@ -326,10 +321,6 @@ const VisualComponent = () => {
               </Box>
             </Grid>
           </Box>
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'large' }} />
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
-          <Box width="xsmall" pad={{ top: 'large', bottom: 'medium' }} />
           <Footer />
         </Box>
       </Box>

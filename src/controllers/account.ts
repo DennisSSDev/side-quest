@@ -43,7 +43,7 @@ const signup = (req: Request, res: Response) => {
   try {
     isStringCheck(username, pass, pass2);
   } catch (err) {
-    return res.status(400).json({ error: err });
+    return res.status(400).json({ error: err.message });
   }
   if (pass !== pass2) {
     return res.status(400).json({ error: `Passwords don't match` });
@@ -82,7 +82,7 @@ const logout = (req: Request, res: Response) => {
     }
     throw new Error('there is no active session');
   } catch (err) {
-    res.status(400).json({ error: err });
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -94,7 +94,7 @@ const changePassword = (req: Request, res: Response) => {
   try {
     isStringCheck(oldpass, pass, pass2);
   } catch (err) {
-    return res.status(400).json({ error: err });
+    return res.status(400).json({ error: err.message });
   }
   if (pass !== pass2) {
     return res.status(400).json({ error: 'passwords do not match' });
@@ -108,7 +108,7 @@ const changePassword = (req: Request, res: Response) => {
     pass,
     err => {
       if (err) {
-        return res.status(400).json({ error: err });
+        return res.status(400).json({ error: err.message });
       }
       return res.json({ result: 'user password updated' });
     }

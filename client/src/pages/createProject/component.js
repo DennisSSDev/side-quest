@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Heading } from 'grommet';
 import NavBar from '../../components/navbar/component';
-import Footer from '../../components/footer/component';
 import { isAuthorized } from '../../util';
+import CreateProjectForm from '../../components/createProjectForm/component';
 
 const VisualComponent = () => (
   <>
@@ -11,7 +11,7 @@ const VisualComponent = () => (
     <Box alignSelf="center">
       <Heading textAlign="center">Create Project</Heading>
     </Box>
-    <Footer />
+    <CreateProjectForm />
   </>
 );
 

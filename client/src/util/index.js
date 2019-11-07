@@ -186,4 +186,34 @@ export const post = (endpoint, data, csrfToken) => {
   });
 };
 
+export const withGET = (
+  BaseComponent,
+  endpoint,
+  param = '',
+  routeProp = false
+) => ({ ...props }) => {
+  const [data, setData] = useState({});
+  const requestData = async signal => {
+    const resp = await request(
+      `${endpoint}${routeProp ? param.concat(props.match.params.id) : param}`,
+      signal
+    );
+    if (!resp.ok) {
+      const json = await resp.json();
+      console.log(json.error);
+      return;
+    }
+    const json = await resp.json();
+    setData(json);
+  };
+  useMountEffect(() => {
+    const controller = new AbortController();
+    requestData(controller.signal);
+    return function cleanup() {
+      controller.abort();
+    };
+  });
+  return <BaseComponent {...props} data={data} />;
+};
+
 export default useMountEffect;

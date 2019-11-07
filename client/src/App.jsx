@@ -9,12 +9,13 @@ import Premium from './pages/premium/component';
 import Dashboard from './pages/dashboard/component';
 import ProjectSearch from './pages/projectSearch/component';
 import CreateProject from './pages/createProject/component';
+import ProjectView from './pages/projectView/component';
 
 const App = () => {
   const AppSwitch = () => (
     <>
       <Grommet theme={v1} full>
-        <Box fill background="dark-1">
+        <Box background="dark-1">
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/signup" component={SignupPage} />
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/projectSearch" component={ProjectSearch} />
             <Route path="/createProject" component={CreateProject} />
+            <Route path="/project/:id" component={ProjectView} />
           </Switch>
         </Box>
       </Grommet>
