@@ -71,11 +71,27 @@ const schema = new Schema({
 export const ProjectSchema = mongoose.model<IProjectModel>('Project', schema);
 
 export class ProjectModel {
+  static getLatestProjects = (amount: number, callback: cb) => {
+    return ProjectSchema.find()
+      .sort({ _id: -1 })
+      .limit(amount)
+      .exec(callback);
+  };
+
   static findAllProjectsByOwnerID = (ownerID: string, callback: cb) => {
     const search = {
       owner: convertId(ownerID)
     };
     return ProjectSchema.find(search, callback);
+  };
+
+  static getProjectsByName = (amount: number, title: string, callback: cb) => {
+    return ProjectSchema.find(
+      {
+        projectName: { $regex: title, $options: 'i' }
+      },
+      callback
+    );
   };
 
   static getOwnerAndTeammatesIDs = (projectID: string, callback: cb) => {
@@ -102,8 +118,10 @@ export class ProjectModel {
       }
       const { teammates } = doc;
       const objID = convertId(newMember);
-      teammates.push(objID);
-      return ProjectSchema.updateOne({ teammates }, doc, callback);
+      if (!teammates.includes(objID)) teammates.push(objID);
+      const copy = doc;
+      copy.teammates = teammates;
+      return ProjectSchema.updateOne({ _id: projectID }, doc, callback);
     });
   };
 }

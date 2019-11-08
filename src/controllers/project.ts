@@ -1,7 +1,8 @@
 import { Response, Request } from 'express';
 import mongoose from 'mongoose';
+import { ProjectSchema, ProjectModel, convertId } from '../models/project';
 import isStringCheck, { isStringCheckArray } from '../util';
-import { ProjectSchema, ProjectModel } from '../models/project';
+
 import { UserDataSchema } from '../models/userdata';
 import { AccountSchema } from '../models';
 
@@ -102,7 +103,29 @@ const getProjectsWithOwner: func = (req, res) => {
 };
 
 const getAllProjects: func = (req, res) => {
-  return res.status(501);
+  const { query } = req;
+  if (!query) {
+    return res.status(400).json({ error: 'no valid query' });
+  }
+  const { title } = query;
+  if (!title) {
+    // then it's a defualt request, just give the latest 10 entries
+    return ProjectModel.getLatestProjects(10, (err, docs) => {
+      if (err) {
+        return res.status(400).json({ error: err });
+      }
+      return res.json({ docs });
+    });
+  }
+  // regex
+  const formattedTitle = title.replace(/[+]/g, ' ');
+  // if the title is provided, search by it and return the first 10 elements
+  return ProjectModel.getProjectsByName(10, formattedTitle, (err, docs) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
+    return res.json({ docs });
+  });
 };
 
 const getProjectByID: func = (req, res) => {
@@ -133,11 +156,34 @@ const joinProject: func = (req, res) => {
   } catch (err) {
     return res.status(400).json({ err: err.message });
   }
-  return ProjectModel.addTeammate(req.session.account._id, id, err => {
+  const userID = req.session.account._id;
+  return ProjectModel.addTeammate(userID, id, err => {
     if (err) {
       return res.status(400).json({ err });
     }
-    return res.json({ result: 'teammate added' });
+    return UserDataSchema.findOne({ owner: userID }, (error, doc) => {
+      if (error) {
+        return res.status(400).json({ error });
+      }
+      if (!doc) {
+        return res
+          .status(400)
+          .json({ error: 'could not find the userdata by user id' });
+      }
+      let { joinedProjects } = doc;
+      if (!joinedProjects) {
+        joinedProjects = [convertId(id)];
+      } else if (!joinedProjects.includes(convertId(id)))
+        joinedProjects.push(convertId(id));
+      const copy = doc;
+      copy.joinedProjects = joinedProjects;
+      return UserDataSchema.updateOne({ owner: userID }, copy, error_ => {
+        if (error_) {
+          return res.status(400).json({ error: error_ });
+        }
+        return res.json({ result: 'teammate added' });
+      });
+    });
   });
 };
 

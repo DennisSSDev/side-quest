@@ -12,7 +12,9 @@ import Project from './controllers/project';
 
 const router = (app: Express) => {
   app.get('/default/image', isHTTPS, isLoggedIn, DefaultData.getDefaultImage);
+
   app.get('/userdata', isHTTPS, isLoggedIn, UserData.getUserData);
+
   app.get('/auth', isHTTPS, auth);
   app.get('/public', isHTTPS, pub);
   app.get('/logout', isHTTPS, isLoggedIn, Account.logout);
@@ -28,6 +30,7 @@ const router = (app: Express) => {
     isLoggedIn,
     Project.getAllUserDataByProjectID
   );
+  app.get('/projects', isHTTPS, isLoggedIn, Project.getAllProjects);
 
   app.post('/signup', isHTTPS, isLoggedOut, Account.signup);
   app.post('/login', isHTTPS, isLoggedOut, Account.login);

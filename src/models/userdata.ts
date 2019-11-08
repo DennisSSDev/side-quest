@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 mongoose.Promise = global.Promise;
 
 const convertId = mongoose.Types.ObjectId;
+export const HardIDConvert = mongoose.Schema.Types.ObjectId;
 
 export interface IUserDataModel extends Document {
   fullname: string;
@@ -10,6 +11,7 @@ export interface IUserDataModel extends Document {
   twitter: string;
   photo: string;
   owner: mongoose.Schema.Types.ObjectId;
+  joinedProjects: [mongoose.Types.ObjectId];
 }
 
 export interface UpdateUserData {
@@ -37,6 +39,9 @@ const schema = new Schema({
   },
   photo: {
     type: String
+  },
+  joinedProjects: {
+    type: [mongoose.Schema.Types.ObjectId]
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
