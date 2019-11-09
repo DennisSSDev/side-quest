@@ -29,7 +29,7 @@ const RedisStore = require('connect-redis')(expsession);
 
 const port = process.env.PORT || process.env.NODE_PORT || 5000;
 
-const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/DomoMaker';
+const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/SideQuestLocal';
 
 mongoose.connect(
   dbURL,
@@ -84,7 +84,7 @@ app.use(
       port: redisURL.port,
       pass: redisPASS
     }),
-    secret: 'Domo Not Artigato',
+    secret: 'Not Artigato',
     resave: true,
     saveUninitialized: true,
     cookie: {
@@ -118,7 +118,6 @@ router(app);
 
 const appListener = (...args: any[]) => {
   if (args[0] as Error) {
-    console.log(args[0]);
     throw args[0];
   }
   console.log(`Listening on port: ${port}`);

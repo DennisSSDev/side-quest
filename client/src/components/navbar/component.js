@@ -31,7 +31,7 @@ let LogOutButton = () => {
       }
     });
     if (resp.status !== 200) {
-      const data = resp.json();
+      const data = await resp.json();
       console.log(data);
     }
     setRedirect(true);
@@ -80,7 +80,10 @@ const MainButton = () => {
   const [isAuth, setAuth] = useState(false);
 
   const isLoggedIn = async signal => {
-    const resp = await request('/auth', signal);
+    const resp = await request('/auth', signal).catch(error => {
+      if (error.name === 'AbortError') return; // expected, this is the abort, so just return
+      throw error;
+    });
     const data = await resp.json();
     if (data && data.redirect === '') {
       setAuth(true);
@@ -113,6 +116,46 @@ const MainButton = () => {
   );
 };
 
+const PremiumButton = () => {
+  const [premiumActive, setPremium] = useState(false);
+
+  const checkPremiumStatus = async signal => {
+    const resp = await request('/premium/status', signal).catch(error => {
+      if (error.name === 'AbortError') return; // expected, this is the abort, so just return
+      throw error;
+    });
+    if (!resp) return;
+    if (!resp.ok) {
+      console.log(await resp.json());
+      return;
+    }
+    const data = await resp.json();
+    setPremium(data.status);
+  };
+  useMountEffect(() => {
+    const controller = new AbortController();
+    checkPremiumStatus(controller.signal);
+    return function cleanup() {
+      controller.abort();
+    };
+  });
+  return (
+    <>
+      {!premiumActive && (
+        <Link to="/premium" className="genLink">
+          <Button
+            color="accent-4"
+            primary
+            label="Premium"
+            margin={{ horizontal: '15px' }}
+            icon={<Star />}
+          />
+        </Link>
+      )}
+    </>
+  );
+};
+
 const VisualComponent = () => (
   <Box
     gridArea="header"
@@ -132,15 +175,7 @@ const VisualComponent = () => (
       justify="between"
       align="end"
     >
-      <Link to="/premium" className="genLink">
-        <Button
-          color="accent-4"
-          primary
-          label="Premium"
-          margin={{ horizontal: '15px' }}
-          icon={<Star />}
-        />
-      </Link>
+      <PremiumButton />
       <LogInButton />
       <SignUpButton />
       <ProjectSearch />

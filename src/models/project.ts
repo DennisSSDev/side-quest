@@ -85,6 +85,18 @@ export class ProjectModel {
     return ProjectSchema.find(search, callback);
   };
 
+  static getProjectsByIDs = (
+    projectIDs: [mongoose.Types.ObjectId],
+    callback: cb
+  ) => {
+    return ProjectSchema.find(
+      {
+        _id: { $in: projectIDs }
+      },
+      callback
+    );
+  };
+
   static getProjectsByName = (amount: number, title: string, callback: cb) => {
     return ProjectSchema.find(
       {

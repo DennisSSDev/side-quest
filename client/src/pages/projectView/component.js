@@ -11,6 +11,7 @@ import useMountEffect, {
   post
 } from '../../util';
 import LinkIcon from '../../components/listPersonalProjects/transpile';
+import ProjectMembers from '../../components/listProjectMembers/component';
 
 const VisualComponent = props => {
   const { doc } = props.props.data;
@@ -53,8 +54,21 @@ const VisualComponent = props => {
       return;
     }
     const json2 = await resp2.json();
-    updateUsersData({ json, userdata: json2 });
+
+    const resp3 = await request('/premium/status', signal);
+    if (!resp3.ok) {
+      console.log(await resp3.json());
+      return;
+    }
+    const json3 = await resp3.json();
+
+    updateUsersData({
+      json,
+      userdata: json2,
+      premiumStatus: json3.status
+    });
   };
+
   useMountEffect(() => {
     const controller = new AbortController();
     requestData(controller.signal);
@@ -63,8 +77,10 @@ const VisualComponent = props => {
     };
   });
   if (!doc) return null;
-  // console.log(doc);
-  console.log(usersData);
+  let membersSlice = [];
+  if (usersData.json && usersData.json.dataOut) {
+    membersSlice = usersData.json.dataOut.slice(1);
+  }
   let joinedProjectsCopy = [];
   if (
     usersData.userdata &&
@@ -72,7 +88,6 @@ const VisualComponent = props => {
     usersData.userdata.data.joinedProjects
   ) {
     const { joinedProjects } = usersData.userdata.data;
-    console.log(joinedProjects);
     joinedProjectsCopy = joinedProjects;
   }
   return (
@@ -95,7 +110,7 @@ const VisualComponent = props => {
               <Box
                 height="small"
                 width="small"
-                margin={{ left: 'medium' }}
+                margin={{ left: 'medium', top: 'medium' }}
                 align="center"
                 alignSelf="center"
                 justify="center"
@@ -187,13 +202,17 @@ const VisualComponent = props => {
                 alignSelf="center"
                 align="end"
               >
-                {(!joinedProjectsCopy.includes(props.props.match.params.id) && (
-                  <Button
-                    margin={{ horizontal: '5px' }}
-                    label="Join Project"
-                    onClick={requestJoinProject}
-                  />
-                )) || (
+                {(!joinedProjectsCopy.includes(props.props.match.params.id) &&
+                  doc.owner &&
+                  usersData.userdata &&
+                  usersData.userdata.data &&
+                  doc.owner !== usersData.userdata.data.owner && (
+                    <Button
+                      margin={{ horizontal: '5px' }}
+                      label="Join Project"
+                      onClick={requestJoinProject}
+                    />
+                  )) || (
                   <Heading color="lightgreen" size="20px">
                     You are a member
                   </Heading>
@@ -261,24 +280,18 @@ const VisualComponent = props => {
                   align="center"
                   background="#1a1a1a"
                   round
-                  fill
                   margin={{ horizontal: '4%' }}
                 >
-                  {/** deal with the screenshots as well */}
-                  <Box height="small" width="medium" overflow="hidden">
-                    <Carousel fill>
-                      <Image
-                        fit="cover"
-                        src="//v2.grommet.io/assets/Wilderpeople_Ricky.jpg"
-                      />
-                      <Image
-                        fit="cover"
-                        src="//v2.grommet.io/assets/IMG_4245.jpg"
-                      />
-                      <Image
-                        fit="cover"
-                        src="//v2.grommet.io/assets/IMG_4210.jpg"
-                      />
+                  <Box
+                    height="medium"
+                    width="medium"
+                    alignSelf="center"
+                    alignContent="center"
+                  >
+                    <Carousel fill alignSelf="center">
+                      {doc.projectScreenshots.map(val => (
+                        <Image key={val} fit="cover" src={val} />
+                      ))}
                     </Carousel>
                   </Box>
                 </Box>
@@ -295,7 +308,6 @@ const VisualComponent = props => {
               align="center"
               background="#1a1a1a"
               round
-              fill
               margin={{ horizontal: '20%' }}
             >
               {usersData.json && (
@@ -392,16 +404,23 @@ const VisualComponent = props => {
               </Heading>
             </Box>
             <Box
-              direction="row"
+              direction="column"
               alignSelf="center"
               align="center"
               background="#1a1a1a"
               round
-              fill
               margin={{ horizontal: '20%' }}
             >
-              {/* put the call to the Owner into the component and display the data of the user */}
+              {(membersSlice.length > 0 && usersData.premiumStatus && (
+                <ProjectMembers members={membersSlice} />
+              )) ||
+                (membersSlice.length === 0 && <Box />) || (
+                  <Heading size="small">
+                    Please activate premium to view teammates
+                  </Heading>
+                )}
             </Box>
+            <Box margin={{ vertical: 'small' }} />
           </Box>
         </Box>
       </Box>

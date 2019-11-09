@@ -10,6 +10,7 @@ import Dashboard from './pages/dashboard/component';
 import ProjectSearch from './pages/projectSearch/component';
 import CreateProject from './pages/createProject/component';
 import ProjectView from './pages/projectView/component';
+import NoPageFound from './pages/noPageFound/component';
 
 const App = () => {
   const AppSwitch = () => (
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/projectSearch" component={ProjectSearch} />
             <Route path="/createProject" component={CreateProject} />
             <Route path="/project/:id" component={ProjectView} />
+            <Route component={NoPageFound} />
           </Switch>
         </Box>
       </Grommet>

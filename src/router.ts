@@ -9,6 +9,7 @@ import Account from './controllers/account';
 import UserData from './controllers/userdata';
 import DefaultData from './controllers/default';
 import Project from './controllers/project';
+import Premium from './controllers/premium';
 
 const router = (app: Express) => {
   app.get('/default/image', isHTTPS, isLoggedIn, DefaultData.getDefaultImage);
@@ -23,6 +24,7 @@ const router = (app: Express) => {
   app.get('/meta', isHTTPS, Account.meta);
 
   app.get('/myProjects', isHTTPS, isLoggedIn, Project.getProjectsWithOwner);
+  app.get('/joinedProjects', isHTTPS, isLoggedIn, Project.getJoinedProjects);
   app.get('/project', isHTTPS, isLoggedIn, Project.getProjectByID);
   app.get(
     '/project/userdata',
@@ -31,6 +33,9 @@ const router = (app: Express) => {
     Project.getAllUserDataByProjectID
   );
   app.get('/projects', isHTTPS, isLoggedIn, Project.getAllProjects);
+
+  app.get('/premium', isHTTPS, isLoggedIn, Premium.activatePremium);
+  app.get('/premium/status', isHTTPS, isLoggedIn, Premium.getUserPremiumStatus);
 
   app.post('/signup', isHTTPS, isLoggedOut, Account.signup);
   app.post('/login', isHTTPS, isLoggedOut, Account.login);

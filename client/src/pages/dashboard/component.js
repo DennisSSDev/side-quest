@@ -1,21 +1,49 @@
-import React from 'react';
-import { Box, Heading, Image, Paragraph, Tab, Tabs, Button } from 'grommet';
+import React, { useState } from 'react';
+import {
+  Box,
+  Heading,
+  Image,
+  Paragraph,
+  Tab,
+  Tabs,
+  Button,
+  Text
+} from 'grommet';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Twitter, Mail, User } from 'grommet-icons';
 import NavBar from '../../components/navbar/component';
-import { isAuthorized, withUserData, withUserMeta } from '../../util';
+import useMountEffect, {
+  isAuthorized,
+  withUserData,
+  withUserMeta,
+  request
+} from '../../util';
 import Settings from '../../components/settings/component';
 import Security from '../../components/security/component';
 import ListPersonalProjects from '../../components/listPersonalProjects/component';
+import ListJoinedProjects from '../../components/listJoinedProjects/component';
 
 const VisualComponent = props => {
   let userPhoto = '';
   let twitterData = '';
   let emailData = '';
   let fullnameData = '';
-
+  const [premiumState, setPremiumState] = useState(false);
+  const checkPremiumStatus = async () => {
+    const controller = new AbortController();
+    const resp = await request('/premium/status', controller.signal);
+    if (!resp.ok) {
+      console.log(await resp.json());
+      return;
+    }
+    const data = await resp.json();
+    setPremiumState(data.status);
+  };
+  useMountEffect(() => {
+    checkPremiumStatus();
+  });
   const { createdAt, username } = props.meta;
   const creationTime = new Date(createdAt);
   const currentTime = new Date();
@@ -71,7 +99,12 @@ const VisualComponent = props => {
             } ago`}
           </Paragraph>
           <Paragraph textAlign="start" margin={{ vertical: '4px' }}>
-            Premium status: Inactive
+            Premium status:
+            {premiumState ? (
+              <Text color="lightgreen"> Active </Text>
+            ) : (
+              <Text color="lightgray"> Inactive </Text>
+            )}
           </Paragraph>
         </Box>
         <Box margin={{ horizontal: '120px' }} />
@@ -152,7 +185,7 @@ const VisualComponent = props => {
             </Tab>
             <Tab title="Joined Projects">
               <Box>
-                <Paragraph>Joined Projects</Paragraph>
+                <ListJoinedProjects />
               </Box>
             </Tab>
             <Tab title="Settings">

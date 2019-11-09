@@ -149,7 +149,11 @@ export const toggleVisIfAuthorized = (
 ) => ({ ...props }) => {
   const [display, setDisplay] = useState(false);
   const isLoggedIn = async signal => {
-    const resp = await request('/auth', signal);
+    const resp = await request('/auth', signal).catch(error => {
+      if (error.name === 'AbortError') return; // expected, this is the abort, so just return
+      throw error;
+    });
+    if (!resp) return;
     const data = await resp.json();
     if (data && data.redirect === '') {
       setDisplay(isVisible);

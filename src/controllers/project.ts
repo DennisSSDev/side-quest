@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { ProjectSchema, ProjectModel, convertId } from '../models/project';
 import isStringCheck, { isStringCheckArray } from '../util';
 
-import { UserDataSchema } from '../models/userdata';
+import { UserDataSchema, UserDataModel } from '../models/userdata';
 import { AccountSchema } from '../models';
 
 type func = (req: Request, res: Response) => void;
@@ -15,6 +15,7 @@ interface Project {
   joinProject: func;
   getProjectByID: func;
   getAllUserDataByProjectID: func;
+  getJoinedProjects: func;
 }
 
 const createProject: func = (req, res) => {
@@ -233,13 +234,42 @@ const getAllUserDataByProjectID: func = (req, res) => {
   );
 };
 
+const getJoinedProjects: func = (req, res) => {
+  if (!req.session || !req.session.account) {
+    res.status(400).json({ error: 'no valid session' });
+    return;
+  }
+  const userID = req.session.account._id;
+
+  UserDataModel.findUserDataByOwnerID(userID, (err, doc) => {
+    if (err) {
+      return res.json({ error: err });
+    }
+    if (!doc) {
+      return res.json({ error: 'no valid user data has been found' });
+    }
+    return ProjectModel.getProjectsByIDs(doc.joinedProjects, (error, docs) => {
+      if (error) {
+        return res.json({ error });
+      }
+      if (!docs) {
+        return res.json({
+          error: 'no project has been found with the provided ids'
+        });
+      }
+      return res.json({ docs });
+    });
+  });
+};
+
 const Project: Project = {
   createProject,
   getProjectsWithOwner,
   getAllProjects,
   getProjectByID,
   joinProject,
-  getAllUserDataByProjectID
+  getAllUserDataByProjectID,
+  getJoinedProjects
 };
 
 export default Project;
