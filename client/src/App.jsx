@@ -11,8 +11,9 @@ import ProjectSearch from './pages/projectSearch/component';
 import CreateProject from './pages/createProject/component';
 import ProjectView from './pages/projectView/component';
 import NoPageFound from './pages/noPageFound/component';
+import { isOnSecureNetwork } from './util';
 
-const App = () => {
+const VisualComp = () => {
   const AppSwitch = () => (
     <>
       <Grommet theme={v1} full>
@@ -38,5 +39,7 @@ const App = () => {
     </Switch>
   );
 };
+
+const App = isOnSecureNetwork(VisualComp);
 
 export default App;

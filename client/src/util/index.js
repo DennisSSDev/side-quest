@@ -142,6 +142,32 @@ export const isAuthorized = BaseComponent => ({ ...props }) => {
 
 export const redirect = (to = '/') => <Redirect to={to} />;
 
+export const isOnSecureNetwork = BaseComponent => ({ ...props }) => {
+  const isLoggedIn = async signal => {
+    const resp = await request('/auth', signal).catch(error => {
+      if (error.name === 'AbortError') return; // expected, this is the abort, so just return
+      throw error;
+    });
+    if (!resp) return;
+    const data = await resp.json();
+    if (data && data.link) {
+      window.location.replace(data.link);
+    }
+  };
+  useMountEffect(() => {
+    const controller = new AbortController();
+    try {
+      isLoggedIn(controller.signal);
+    } catch (err) {
+      console.log(err);
+    }
+    return function cleanup() {
+      controller.abort();
+    };
+  });
+  return <BaseComponent {...props} />;
+};
+
 export const toggleVisIfAuthorized = (
   BaseComponent,
   isVisible,
