@@ -13,6 +13,9 @@ interface Account {
   meta: func;
 }
 
+/**
+ * Gets the CSRF token for forms
+ */
 const getToken = (req: Request, res: Response) => {
   const csrfTokenJSON = {
     csrfToken: req.csrfToken()
@@ -20,6 +23,9 @@ const getToken = (req: Request, res: Response) => {
   res.json(csrfTokenJSON);
 };
 
+/**
+ * validates whether the user can login
+ */
 const login = (req: Request, res: Response) => {
   const { username, pass } = req.body;
 
@@ -38,6 +44,9 @@ const login = (req: Request, res: Response) => {
   });
 };
 
+/**
+ * processes the user's login credentials and determines if the user is valid or not
+ */
 const signup = (req: Request, res: Response) => {
   const { username, pass, pass2 } = req.body;
   try {
@@ -73,6 +82,9 @@ const signup = (req: Request, res: Response) => {
   });
 };
 
+/**
+ * kills the user's session and returns him into a public session
+ */
 const logout = (req: Request, res: Response) => {
   try {
     if (req.session) {
@@ -86,6 +98,10 @@ const logout = (req: Request, res: Response) => {
   }
 };
 
+/**
+ * handles the process of changing the user's password
+ * if the old password matches the current password and the entered new password (twice) match, update happens
+ */
 const changePassword = (req: Request, res: Response) => {
   if (!req.session || !req.session.account) {
     return res.status(400).json({ error: 'there is no active session' });

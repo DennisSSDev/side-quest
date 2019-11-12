@@ -1,5 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+/**
+ * Data Model for storing projects.
+ * A project is a peice of data that groups users together based on
+ * a task they will work together on
+ */
+
 mongoose.Promise = global.Promise;
 
 export const convertId = mongoose.Types.ObjectId;
@@ -71,6 +77,7 @@ const schema = new Schema({
 export const ProjectSchema = mongoose.model<IProjectModel>('Project', schema);
 
 export class ProjectModel {
+  // retrieves the latest created projects based on the specified amount number
   static getLatestProjects = (amount: number, callback: cb) => {
     return ProjectSchema.find()
       .sort({ _id: -1 })
@@ -78,6 +85,7 @@ export class ProjectModel {
       .exec(callback);
   };
 
+  // returns all the projects that were created by the specified owner doc id
   static findAllProjectsByOwnerID = (ownerID: string, callback: cb) => {
     const search = {
       owner: convertId(ownerID)
@@ -85,6 +93,7 @@ export class ProjectModel {
     return ProjectSchema.find(search, callback);
   };
 
+  // returns the project by the given doc id
   static getProjectsByIDs = (
     projectIDs: [mongoose.Types.ObjectId],
     callback: cb
@@ -97,6 +106,7 @@ export class ProjectModel {
     );
   };
 
+  // searcches and retrieves all the projects that match the given title based on regex
   static getProjectsByName = (amount: number, title: string, callback: cb) => {
     return ProjectSchema.find(
       {
@@ -106,6 +116,8 @@ export class ProjectModel {
     );
   };
 
+  // retrives all the userIDs associated with a project,
+  // that is the creator of the project and the members that joined
   static getOwnerAndTeammatesIDs = (projectID: string, callback: cb) => {
     return ProjectSchema.findById(convertId(projectID), (err, doc) => {
       if (err) {
@@ -120,6 +132,8 @@ export class ProjectModel {
     });
   };
 
+  // updates the projects teammate list by adding a new teammate
+  // the teammate is an id of the user
   static addTeammate = (newMember: string, projectID: string, callback: cb) => {
     ProjectSchema.findById(convertId(projectID), (err, doc) => {
       if (err) {

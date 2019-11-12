@@ -7,7 +7,9 @@ interface Premium {
   activatePremium: func;
   getUserPremiumStatus: func;
 }
-
+/**
+ * add a new user into the db with an active db
+ */
 const activatePremium = (req: Request, res: Response) => {
   if (!req.session || !req.session.account) {
     return res.status(400).json({ error: 'no valid session' });
@@ -21,6 +23,9 @@ const activatePremium = (req: Request, res: Response) => {
   });
 };
 
+/**
+ * return true/false if the user has premium based on doc id
+ */
 const getUserPremiumStatus = (req: Request, res: Response) => {
   if (!req.session || !req.session.account) {
     return res.status(400).json({ error: 'no valid session' });

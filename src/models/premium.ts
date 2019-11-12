@@ -1,5 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+/**
+ * Data Model to store users' premium status
+ */
+
 mongoose.Promise = global.Promise;
 
 const convertId = mongoose.Types.ObjectId;
@@ -35,6 +39,7 @@ const schema = new Schema({
 export const UserDataSchema = mongoose.model<IPremiumModel>('Premium', schema);
 
 export class PremiumModel {
+  // retrieve the user's premium status via doc id
   static getStatusByOwnerID = (ownerID: string, callback: cb) => {
     const search = {
       owner: convertId(ownerID)

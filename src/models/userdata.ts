@@ -1,5 +1,13 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+/**
+ * Data Model that stores user's meta data
+ * meta data includes email, twitter handle, fullname, etc
+ * It is specifically designed to not be included inside the account model
+ * as the account model is more prone to security attacks
+ * and needs to be as tidy as possibly
+ */
+
 mongoose.Promise = global.Promise;
 
 const convertId = mongoose.Types.ObjectId;
@@ -57,6 +65,7 @@ export const UserDataSchema = mongoose.model<IUserDataModel>(
 );
 
 export class UserDataModel {
+  // returns the first user's meta data based on the doc owner id
   static findUserDataByOwnerID = (ownerID: string, callback: cb) => {
     const search = {
       owner: convertId(ownerID)

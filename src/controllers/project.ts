@@ -18,6 +18,10 @@ interface Project {
   getJoinedProjects: func;
 }
 
+/**
+ * generate a new project record in the db
+ * grabs all the form data supplied by the user, validates it
+ */
 const createProject: func = (req, res) => {
   if (!req.session || !req.session.account) {
     res.status(400).json({ error: 'no valid session' });
@@ -90,6 +94,9 @@ const createProject: func = (req, res) => {
   });
 };
 
+/**
+ * get all projects data information based on the owner id
+ */
 const getProjectsWithOwner: func = (req, res) => {
   if (!req.session || !req.session.account) {
     res.status(400).json({ error: 'no valid session' });
@@ -103,6 +110,10 @@ const getProjectsWithOwner: func = (req, res) => {
   });
 };
 
+/**
+ * find the first few latest created projects
+ * if a title is provided, find the first few that match it
+ */
 const getAllProjects: func = (req, res) => {
   const { query } = req;
   if (!query) {
@@ -129,6 +140,9 @@ const getAllProjects: func = (req, res) => {
   });
 };
 
+/**
+ * get project data by its own id
+ */
 const getProjectByID: func = (req, res) => {
   const { query } = req;
   if (!query) {
@@ -147,6 +161,9 @@ const getProjectByID: func = (req, res) => {
   });
 };
 
+/**
+ * create a new member in a project
+ */
 const joinProject: func = (req, res) => {
   if (!req.session || !req.session.account) {
     return res.status(400).json({ error: 'no valid session' });
@@ -188,6 +205,10 @@ const joinProject: func = (req, res) => {
   });
 };
 
+/**
+ * returns all user meta data of the owner and members of the project
+ * + their usernames
+ */
 const getAllUserDataByProjectID: func = (req, res) => {
   const { query } = req;
   if (!query) {
@@ -234,6 +255,10 @@ const getAllUserDataByProjectID: func = (req, res) => {
   );
 };
 
+/**
+ * retrieves all the data on all the projects that
+ * a user has joined by the user id
+ */
 const getJoinedProjects: func = (req, res) => {
   if (!req.session || !req.session.account) {
     res.status(400).json({ error: 'no valid session' });

@@ -5,7 +5,6 @@ import favicon from 'serve-favicon';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import mongoose, { ConnectionOptions } from 'mongoose';
-import expressHandlebars from 'express-handlebars';
 import expsession from 'express-session';
 import url, { UrlWithStringQuery } from 'url';
 import csrf from 'csurf';
@@ -19,18 +18,14 @@ interface ResponseError extends Error {
   code?: string;
 }
 
-type Engine = (
-  path: string,
-  options: object,
-  callback: (e: any, rendered: string) => void
-) => void;
-
+// init redis
 const RedisStore = require('connect-redis')(expsession);
 
 const port = process.env.PORT || process.env.NODE_PORT || 5000;
 
 const dbURL = process.env.MONGODB_URI || 'mongodb://localhost/SideQuestLocal';
 
+// connect mongo db
 mongoose.connect(
   dbURL,
   { useNewUrlParser: true, useUnifiedTopology: true } as ConnectionOptions,
@@ -42,6 +37,7 @@ mongoose.connect(
   }
 );
 
+// assign redis params for dev
 let redisURL: UrlWithStringQuery = {
   hostname: 'redis-17436.c84.us-east-1-2.ec2.cloud.redislabs.com',
   port: '17436',
@@ -60,11 +56,14 @@ if (process.env.REDISCLOUD_URL) {
 
 const app = express();
 
+// assign the assets folder
 app.use(
   '/assets',
   express.static(path.resolve(`${__dirname}/../client/public/`))
 );
+// assign the build folder
 app.use(express.static(path.resolve(`${__dirname}/../client/build`)));
+// favicon serve
 app.use(favicon(`${__dirname}/../client/public/favicon.ico`));
 app.disable('x-powered-by');
 app.use(compression());
@@ -78,7 +77,6 @@ app.use(bodyParser.json());
 
 app.use(
   expsession({
-    // key: 'sessionid',
     store: new RedisStore({
       host: redisURL.hostname,
       port: redisURL.port,
@@ -93,11 +91,7 @@ app.use(
   })
 );
 
-app.engine('handlebars', expressHandlebars() as Engine);
-app.set('view engine', 'handlebars');
-app.set('views', `${__dirname}/../views`);
 app.use(cookieParser());
-
 app.use(csrf());
 app.use(
   (
@@ -112,6 +106,7 @@ app.use(
   }
 );
 
+// create base64 files to reuse as defaults
 generateDefaultFiles();
 
 router(app);

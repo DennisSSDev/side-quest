@@ -9,6 +9,9 @@ interface UserData {
   updateUserData: func;
 }
 
+/**
+ * retrieve the user meta data based on the session id
+ */
 const getUserData = (req: Request, res: Response) => {
   if (!req.session || !req.session.account) {
     res.status(400).json({ error: 'no valid session' });
@@ -23,6 +26,9 @@ const getUserData = (req: Request, res: Response) => {
   });
 };
 
+/**
+ * update or create the user data based on the supplied form info
+ */
 const updateUserData = (req: Request, res: Response) => {
   const { fullname, email, twitter, photo } = req.body;
   try {

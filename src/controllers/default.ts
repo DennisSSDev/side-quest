@@ -7,6 +7,9 @@ interface DefaultData {
   getDefaultImage: func;
 }
 
+/**
+ * returns the user's default icon
+ */
 const getDefaultImage = (req: Request, res: Response) => {
   return res.json({ img: DefaultFileData.img.defaultUserImage });
 };

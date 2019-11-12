@@ -27,6 +27,7 @@ const VisualComponent = () => {
 
   const requestSpecificProjects = async () => {
     const controller = new AbortController();
+    if (!data.input) return;
     const resp = await request(
       `/projects?title=${data.input.replace(/ /g, '+')}`,
       controller.signal

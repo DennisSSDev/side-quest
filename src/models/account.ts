@@ -1,6 +1,11 @@
 import crypto from 'crypto';
 import mongoose, { Schema, Document } from 'mongoose';
 
+/**
+ * Account is responsible for storing all data related to
+ * user login + generating hashes for passwords
+ */
+
 mongoose.Promise = global.Promise;
 const convertId = mongoose.Types.ObjectId;
 
@@ -20,6 +25,7 @@ export interface IAccountModel extends Document {
  */
 export type cb = (...args: any[]) => void;
 
+// check that the given password is valid
 const validatePassword = (
   doc: IAccountModel,
   password: string,
@@ -66,6 +72,7 @@ const schema = new Schema({
 export const AccountSchema = mongoose.model<IAccountModel>('Account', schema);
 
 export class AccountModel {
+  // find user by the specified username
   static findByUsername = (name: string, callback: cb) => {
     const search = {
       username: name
@@ -73,6 +80,7 @@ export class AccountModel {
     return AccountSchema.findOne(search, callback);
   };
 
+  // generate password hash that will be stored in the db
   static genHash = (password: string, callback: cb) => {
     const salt = crypto.randomBytes(saltLength);
 
@@ -86,6 +94,7 @@ export class AccountModel {
     );
   };
 
+  // convert document data and give it back to the current user session
   static toAPI = (doc: IAccountModel) => ({
     username: doc.username,
     _id: doc._id
@@ -120,6 +129,7 @@ export class AccountModel {
     });
   };
 
+  // grabs user meta data such as username and creation date
   static getUserMetaInfo = (id: string, callback: cb) => {
     const _id = convertId(id);
 
@@ -128,6 +138,7 @@ export class AccountModel {
       .exec(callback);
   };
 
+  // call to make sure that the supplied data is from a valid user
   static authenticate = (username: string, password: string, callback: cb) =>
     AccountModel.findByUsername(username, (err, doc) => {
       if (err) {
